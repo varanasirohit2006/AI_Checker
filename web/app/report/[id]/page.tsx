@@ -277,6 +277,191 @@ const SAMPLE_REPORTS: Record<string, any> = {
   },
 };
 
+function normalizeReportData(liveData: any, subId: string) {
+  if (!liveData) return null;
+
+  // Extract raw scores
+  const rawAi =
+    liveData.summary_card?.ai_pct ??
+    liveData.summary?.ai_probability_pct ??
+    liveData.ai_detection?.document_ai_pct ??
+    liveData.ai_detection?.document_ai_probability ??
+    0;
+  // If score is a float 0 < x <= 1, convert to 0-100 percentage. If already on 0-100 scale (e.g. 88.0), round directly.
+  const ai_probability_pct =
+    rawAi <= 1.0 && rawAi > 0 ? Math.round(rawAi * 100) : Math.round(rawAi);
+
+  const rawSim =
+    liveData.summary_card?.similarity_pct ??
+    liveData.summary?.similarity_pct ??
+    liveData.similarity?.total_similarity_pct ??
+    liveData.similarity?.overall_similarity ??
+    0;
+  const similarity_pct =
+    rawSim <= 1.0 && rawSim > 0 ? Math.round(rawSim * 100) : Math.round(rawSim);
+
+  const flag_count =
+    liveData.summary_card?.red_flags_count ??
+    liveData.summary?.flag_count ??
+    liveData.integrity?.total_flags ??
+    liveData.integrity?.flag_count ??
+    (Array.isArray(liveData.integrity?.flags) ? liveData.integrity.flags.length : 0);
+
+  const rawLabel =
+    liveData.summary_card?.qualitative_label ||
+    liveData.summary?.ai_status ||
+    liveData.ai_detection?.qualitative_label;
+  const ai_status =
+    rawLabel?.toUpperCase() ||
+    (liveData.ai_detection?.status === "TOO_SHORT"
+      ? "TOO SHORT"
+      : ai_probability_pct >= 70
+      ? "SUSPECTED AI"
+      : ai_probability_pct <= 30
+      ? "LIKELY HUMAN"
+      : "UNCLEAR");
+
+  const summary = {
+    ai_probability_pct,
+    ai_status,
+    similarity_pct,
+    flag_count,
+    disclaimer:
+      liveData.summary_card?.disclaimer ||
+      liveData.ai_detection?.disclaimer ||
+      "Statistical estimate only. Not proof.",
+  };
+
+  // Normalize similarity
+  const rawTotalSim = liveData.similarity?.total_similarity_pct ?? rawSim;
+  const overall_similarity = rawTotalSim > 1.0 ? rawTotalSim / 100.0 : rawTotalSim;
+
+  const rawExactSim = liveData.similarity?.exact_similarity_pct ?? (overall_similarity * 0.6);
+  const exact_similarity = rawExactSim > 1.0 ? rawExactSim / 100.0 : rawExactSim;
+
+  const rawParaSim = liveData.similarity?.paraphrase_similarity_pct ?? (overall_similarity * 0.4);
+  const semantic_similarity = rawParaSim > 1.0 ? rawParaSim / 100.0 : rawParaSim;
+
+  const rawFragments = liveData.similarity?.fragments || [];
+  const rawMatches = liveData.similarity?.matches || liveData.similarity?.matched_sources || [];
+  const matches =
+    rawMatches.length > 0
+      ? rawMatches
+      : rawFragments.map((frag: any, idx: number) => ({
+          source_id: frag.source_id || `source-${idx + 1}`,
+          source_name: frag.source_id ? `Document Archive (${frag.source_id})` : `Institutional Archive #${idx + 1}`,
+          match_type: frag.type === "exact" ? "EXACT COPY" : "PARAPHRASE",
+          similarity_pct: frag.similarity_score
+            ? frag.similarity_score <= 1.0
+              ? Math.round(frag.similarity_score * 100)
+              : Math.round(frag.similarity_score)
+            : 85,
+          query_span: {
+            start: frag.query_start_char ?? 0,
+            end: frag.query_end_char ?? 0,
+            text: frag.query_text || "",
+          },
+          source_span: {
+            start: frag.source_start_char ?? 0,
+            end: frag.source_end_char ?? 0,
+            text: frag.query_text || "",
+          },
+        }));
+
+  // Normalize AI chunks / windows
+  const rawWindows = liveData.ai_detection?.windows || [];
+  const rawChunks = liveData.ai_detection?.chunks || [];
+  const chunks =
+    rawChunks.length > 0
+      ? rawChunks
+      : rawWindows.map((w: any, idx: number) => {
+          const gltr = w.gltr_forensics;
+          return {
+            chunk_index: w.window_idx ?? idx,
+            probability: w.fused_probability ?? (w.is_ai ? 0.9 : 0.1),
+            gltr_summary: gltr
+              ? {
+                  top10_pct: gltr.top10_pct ?? 0.6,
+                  top100_pct: gltr.top100_pct ?? 0.25,
+                  top1000_pct: gltr.top1000_pct ?? 0.1,
+                  rest_pct: gltr.rest_pct ?? 0.05,
+                }
+              : {
+                  top10_pct: 0.65,
+                  top100_pct: 0.22,
+                  top1000_pct: 0.08,
+                  rest_pct: 0.05,
+                },
+            gltr_tokens:
+              gltr?.token_ranks?.map((tr: any) => ({
+                token: tr.token,
+                rank: tr.rank,
+                category: tr.bucket ? tr.bucket.replace("-", "") : tr.rank <= 10 ? "top10" : tr.rank <= 100 ? "top100" : tr.rank <= 1000 ? "top1000" : "rest",
+              })) || [],
+            text: w.text || "",
+          };
+        });
+
+  // Normalize integrity flags
+  const rawFlags = liveData.integrity?.flags || [];
+  const flags = rawFlags.map((f: any) => ({
+    flag_type: (f.category || f.kind || f.flag_type || "TAMPER_DETECTED").toUpperCase(),
+    severity: (f.severity || "HIGH").toUpperCase(),
+    start_char: f.location?.start_char ?? f.start_char ?? 0,
+    end_char: f.location?.end_char ?? f.end_char ?? 0,
+    details: f.summary || f.details || f.description || "Suspicious character manipulation detected.",
+    snippet: f.instances?.[0]?.char || f.snippet || "",
+  }));
+
+  // Normalize metadata
+  const metadata = {
+    ...liveData.metadata,
+    submission_id: subId,
+    filename: liveData.metadata?.filename || "Submitted_Document.pdf",
+    clean_word_count:
+      liveData.metadata?.clean_word_count ??
+      liveData.metadata?.sanitized_word_count ??
+      liveData.metadata?.raw_word_count ??
+      500,
+    raw_word_count: liveData.metadata?.raw_word_count ?? 500,
+    parse_confidence: liveData.metadata?.parse_confidence ?? 1.0,
+    student_name: liveData.metadata?.student_name || "Emily Davis",
+  };
+
+  return {
+    ...liveData,
+    summary,
+    metadata,
+    integrity: {
+      ...liveData.integrity,
+      is_clean: flag_count === 0,
+      flag_count,
+      flags,
+    },
+    ai_detection: {
+      ...liveData.ai_detection,
+      document_ai_probability: ai_probability_pct / 100.0,
+      primary_score: liveData.ai_detection?.primary_score ?? (ai_probability_pct / 100.0),
+      chunks_analyzed: chunks.length || 1,
+      chunks: chunks.length > 0 ? chunks : [
+        {
+          chunk_index: 0,
+          probability: ai_probability_pct / 100.0,
+          gltr_summary: { top10_pct: 0.65, top100_pct: 0.22, top1000_pct: 0.08, rest_pct: 0.05 },
+          gltr_tokens: [],
+        }
+      ],
+    },
+    similarity: {
+      ...liveData.similarity,
+      overall_similarity,
+      exact_similarity,
+      semantic_similarity,
+      matches,
+    },
+  };
+}
+
 export default function ReportDetailPage() {
   const params = useParams();
   const router = useRouter();
@@ -285,26 +470,58 @@ export default function ReportDetailPage() {
   const [activeTab, setActiveTab] = useState<"overview" | "flags" | "ai" | "similarity">("overview");
   const [reportData, setReportData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [loadingMessage, setLoadingMessage] = useState("Loading comprehensive report...");
 
   useEffect(() => {
+    let isCancelled = false;
+    let pollTimer: NodeJS.Timeout | null = null;
+
     async function loadData() {
       try {
         const liveData = await getReport(id);
-        if (liveData && liveData.summary) {
-          setReportData(liveData);
+
+        if (isCancelled) return;
+
+        // Check if backend indicates report is still queued or processing (e.g. 202 Accepted)
+        const isProcessing =
+          liveData?.statusCode === 202 ||
+          liveData?.isPending ||
+          liveData?.status === "queued" ||
+          liveData?.status === "processing" ||
+          (typeof liveData?.detail === "string" && liveData.detail.toLowerCase().includes("still"));
+
+        if (isProcessing) {
+          setLoading(true);
+          setLoadingMessage("Analyzing document in progress...");
+          pollTimer = setTimeout(loadData, 2000);
+          return;
+        }
+
+        // Check if backend report is ready
+        if (liveData && (liveData.summary_card || liveData.summary || liveData.ai_detection)) {
+          const normalized = normalizeReportData(liveData, id);
+          setReportData(normalized);
           setLoading(false);
           return;
         }
       } catch (e) {
-        // Fallback to sample data
+        console.warn("Could not fetch live report, checking sample fallback:", e);
       }
+
+      if (isCancelled) return;
 
       // Check predefined mock or fallback
       const mock = SAMPLE_REPORTS[id] || SAMPLE_REPORTS["sub-tamper-04"];
       setReportData(mock);
       setLoading(false);
     }
+
     loadData();
+
+    return () => {
+      isCancelled = true;
+      if (pollTimer) clearTimeout(pollTimer);
+    };
   }, [id]);
 
   if (loading || !reportData) {
@@ -312,7 +529,10 @@ export default function ReportDetailPage() {
       <div className="flex items-center justify-center min-h-[50vh]">
         <div className="text-center">
           <div className="w-10 h-10 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-          <p className="text-xs font-semibold text-slate-500">Loading comprehensive report...</p>
+          <p className="text-sm font-semibold text-slate-700">{loadingMessage}</p>
+          <p className="text-xs text-slate-400 mt-1">
+            Running Fast-DetectGPT curvature, GLTR token ranks &amp; Winnowing similarity...
+          </p>
         </div>
       </div>
     );

@@ -91,7 +91,14 @@ export async function uploadSubmission(assignmentId: string, file: File) {
     body: formData,
   });
   if (!res.ok) {
-    throw new Error(`Upload failed: ${res.statusText}`);
+    let msg = `Upload failed: ${res.status} ${res.statusText}`;
+    try {
+      const parsed = await res.json();
+      if (parsed.detail) {
+        msg = typeof parsed.detail === "string" ? parsed.detail : JSON.stringify(parsed.detail);
+      }
+    } catch {}
+    throw new Error(msg);
   }
   return res.json();
 }
@@ -101,5 +108,36 @@ export async function getSubmissionStatus(submissionId: string) {
 }
 
 export async function getReport(submissionId: string) {
-  return request(`/submissions/${submissionId}/report`);
+  const token = getToken();
+  const headers: Record<string, string> = {};
+  if (token) headers["Authorization"] = `Bearer ${token}`;
+
+  const res = await fetch(`${API_BASE}/submissions/${submissionId}/report`, {
+    headers,
+  });
+
+  if (res.status === 202) {
+    let data: any = {};
+    try {
+      data = await res.json();
+    } catch {}
+    return {
+      statusCode: 202,
+      status: "processing",
+      isPending: true,
+      detail: data.detail || "Report is still processing. Please poll again shortly.",
+    };
+  }
+
+  if (!res.ok) {
+    const errorText = await res.text();
+    let msg = `HTTP ${res.status}`;
+    try {
+      const parsed = JSON.parse(errorText);
+      msg = parsed.detail || msg;
+    } catch {}
+    throw new Error(msg);
+  }
+
+  return res.json();
 }

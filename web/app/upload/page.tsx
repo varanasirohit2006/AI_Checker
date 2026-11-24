@@ -14,6 +14,7 @@ export default function UploadPage() {
   const [uploading, setUploading] = useState(false);
   const [progressText, setProgressText] = useState("");
   const [dragActive, setDragActive] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
@@ -29,12 +30,14 @@ export default function UploadPage() {
     e.preventDefault();
     e.stopPropagation();
     setDragActive(false);
+    setError(null);
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       setFile(e.dataTransfer.files[0]);
     }
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setError(null);
     if (e.target.files && e.target.files[0]) {
       setFile(e.target.files[0]);
     }
@@ -44,32 +47,35 @@ export default function UploadPage() {
     e.preventDefault();
     if (!file) return;
 
+    setError(null);
     setUploading(true);
     setProgressText("Uploading document to secure storage...");
 
     try {
-      // Simulate/call upload
-      try {
-        const res = await uploadSubmission(assignment, file);
-        if (res && res.submission_id) {
-          setProgressText("Processing pipeline (Homoglyphs -> Winnowing -> AI Curvature)...");
-          setTimeout(() => {
-            router.push(`/report/${res.submission_id}`);
-          }, 1500);
-          return;
-        }
-      } catch (backendErr) {
-        console.warn("Backend API not reachable or fallback used, directing to simulated report.");
+      const res = await uploadSubmission(assignment, file);
+      const subId = res?.id || res?.submission_id;
+      if (subId) {
+        setProgressText("Processing pipeline (Homoglyphs -> Winnowing -> AI Curvature)...");
+        setTimeout(() => {
+          router.push(`/report/${subId}`);
+        }, 1000);
+        return;
+      } else {
+        throw new Error("Upload completed but no submission ID was returned.");
       }
-
-      // Standalone preview fallback:
-      setProgressText("Ingesting document and extracting text tokens...");
-      await new Promise((r) => setTimeout(r, 600));
-      setProgressText("Executing Anti-Tamper check & Homoglyph sanitization...");
-      await new Promise((r) => setTimeout(r, 600));
-      setProgressText("Running Fast-DetectGPT & FAISS Cosine matching...");
-      await new Promise((r) => setTimeout(r, 800));
-      router.push("/report/sub-tamper-04");
+    } catch (backendErr: any) {
+      console.error("Upload error:", backendErr);
+      const errMsg = backendErr?.message || "Upload failed. Please check backend connection.";
+      if (
+        errMsg.includes("401") ||
+        errMsg.toLowerCase().includes("unauthorized") ||
+        errMsg.toLowerCase().includes("not authenticated") ||
+        errMsg.toLowerCase().includes("could not validate credentials")
+      ) {
+        setError("Please sign in as teacher first (Session expired or unauthorized).");
+      } else {
+        setError(`Upload failed: ${errMsg}`);
+      }
     } finally {
       setUploading(false);
     }
@@ -99,6 +105,25 @@ export default function UploadPage() {
             Accepts PDF, Microsoft Word (.docx), or plain text (.txt). Maximum 25MB.
           </p>
         </div>
+
+        {error && (
+          <div className="mb-6 p-4 bg-rose-50 border border-rose-200 rounded-lg flex items-start space-x-3 text-rose-800 text-sm">
+            <AlertTriangle className="w-5 h-5 text-rose-600 flex-shrink-0 mt-0.5" />
+            <div className="flex-1">
+              <p className="font-semibold">{error}</p>
+              {error.includes("sign in") && (
+                <div className="mt-2">
+                  <Link
+                    href="/login"
+                    className="inline-flex items-center text-xs font-bold text-indigo-600 hover:text-indigo-800 underline"
+                  >
+                    Go to Login page &rarr;
+                  </Link>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>

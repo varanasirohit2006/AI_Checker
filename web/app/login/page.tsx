@@ -43,9 +43,34 @@ export default function LoginPage() {
     }
   };
 
-  const handleDemoAccess = () => {
-    setToken("mock_jwt_teacher_demo");
-    router.push("/dashboard");
+  const handleDemoAccess = async () => {
+    setError(null);
+    setLoading(true);
+    try {
+      const data = await login("teacher@university.edu", "password123");
+      if (data && data.access_token) {
+        setToken(data.access_token);
+        router.push("/dashboard");
+        return;
+      }
+      throw new Error("No access token returned from demo login");
+    } catch (err: any) {
+      console.warn("Demo login via API failed, checking fallback:", err);
+      // Fallback for standalone preview if backend is not reachable
+      if (
+        err.message &&
+        (err.message.includes("Failed to fetch") ||
+          err.message.includes("NetworkError") ||
+          err.message.includes("HTTP 404"))
+      ) {
+        setToken("mock_jwt_teacher_demo");
+        router.push("/dashboard");
+      } else {
+        setError(err.message || "Failed to log in as demo teacher.");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
