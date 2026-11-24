@@ -1,0 +1,584 @@
+{
+ "tampered": [
+  {
+   "file": "tampered_homoglyphs.docx",
+   "category": "replaced_character",
+   "kind": "mixed_script_word",
+   "key": "\u0440\u0430ypal",
+   "count": 1,
+   "locator": {
+    "paragraph": 0
+   }
+  },
+  {
+   "file": "tampered_homoglyphs.docx",
+   "category": "replaced_character",
+   "kind": "mixed_script_word",
+   "key": "g\u043e\u043egle",
+   "count": 1,
+   "locator": {
+    "paragraph": 0
+   }
+  },
+  {
+   "file": "tampered_homoglyphs.docx",
+   "category": "replaced_character",
+   "kind": "mixed_script_word",
+   "key": "\u0430pple",
+   "count": 1,
+   "locator": {
+    "paragraph": 0
+   }
+  },
+  {
+   "file": "tampered_homoglyphs.docx",
+   "category": "replaced_character",
+   "kind": "mixed_script_word",
+   "key": "micr\u043esoft",
+   "count": 1,
+   "locator": {
+    "paragraph": 0
+   }
+  },
+  {
+   "file": "tampered_homoglyphs.docx",
+   "category": "replaced_character",
+   "kind": "mixed_script_word",
+   "key": "payp\u0430l",
+   "count": 1,
+   "locator": {
+    "paragraph": 1
+   }
+  },
+  {
+   "file": "tampered_homoglyphs.docx",
+   "category": "replaced_character",
+   "kind": "mixed_script_word",
+   "key": "amaz\u043en",
+   "count": 1,
+   "locator": {
+    "paragraph": 1
+   }
+  },
+  {
+   "file": "tampered_homoglyphs.docx",
+   "category": "replaced_character",
+   "kind": "mixed_script_word",
+   "key": "faceb\u043e\u043ek",
+   "count": 1,
+   "locator": {
+    "paragraph": 1
+   }
+  },
+  {
+   "file": "tampered_homoglyphs.docx",
+   "category": "replaced_character",
+   "kind": "mixed_script_word",
+   "key": "twitt\u0435r",
+   "count": 1,
+   "locator": {
+    "paragraph": 1
+   }
+  },
+  {
+   "file": "tampered_homoglyphs.docx",
+   "category": "replaced_character",
+   "kind": "mixed_script_word",
+   "key": "netfl\u0456x",
+   "count": 1,
+   "locator": {
+    "paragraph": 2
+   }
+  },
+  {
+   "file": "tampered_homoglyphs.docx",
+   "category": "replaced_character",
+   "kind": "mixed_script_word",
+   "key": "spot\u0456fy",
+   "count": 1,
+   "locator": {
+    "paragraph": 2
+   }
+  },
+  {
+   "file": "tampered_homoglyphs.docx",
+   "category": "replaced_character",
+   "kind": "mixed_script_word",
+   "key": "link\u0435dIn",
+   "count": 1,
+   "locator": {
+    "paragraph": 2
+   }
+  },
+  {
+   "file": "tampered_homoglyphs.docx",
+   "category": "replaced_character",
+   "kind": "mixed_script_word",
+   "key": "inst\u0430gram",
+   "count": 1,
+   "locator": {
+    "paragraph": 2
+   }
+  },
+  {
+   "file": "tampered_zero_width.docx",
+   "category": "hidden_unicode",
+   "kind": "invisible_character",
+   "key": "U+200D",
+   "count": 1,
+   "locator": {
+    "paragraph": 0
+   }
+  },
+  {
+   "file": "tampered_zero_width.docx",
+   "category": "hidden_unicode",
+   "kind": "invisible_character",
+   "key": "U+200C",
+   "count": 2,
+   "locator": {
+    "paragraph": 0
+   }
+  },
+  {
+   "file": "tampered_zero_width.docx",
+   "category": "hidden_unicode",
+   "kind": "invisible_character",
+   "key": "U+200B",
+   "count": 5,
+   "locator": {
+    "paragraph": 0
+   }
+  },
+  {
+   "file": "tampered_zero_width.docx",
+   "category": "hidden_unicode",
+   "kind": "invisible_character",
+   "key": "U+FEFF",
+   "count": 1,
+   "locator": {
+    "paragraph": 1
+   }
+  },
+  {
+   "file": "tampered_zero_width.docx",
+   "category": "hidden_unicode",
+   "kind": "invisible_character",
+   "key": "U+2060",
+   "count": 1,
+   "locator": {
+    "paragraph": 1
+   }
+  },
+  {
+   "file": "tampered_zero_width.docx",
+   "category": "hidden_unicode",
+   "kind": "invisible_character",
+   "key": "U+202E",
+   "count": 1,
+   "locator": {
+    "paragraph": 1
+   }
+  },
+  {
+   "file": "tampered_zero_width.docx",
+   "category": "hidden_unicode",
+   "kind": "invisible_character",
+   "key": "U+200D",
+   "count": 1,
+   "locator": {
+    "paragraph": 1
+   }
+  },
+  {
+   "file": "tampered_zero_width.docx",
+   "category": "hidden_unicode",
+   "kind": "invisible_character",
+   "key": "U+00AD",
+   "count": 3,
+   "locator": {
+    "paragraph": 1
+   }
+  },
+  {
+   "file": "tampered_hidden_text.docx",
+   "category": "hidden_text",
+   "kind": "white_font",
+   "key": "hidden invoice details",
+   "count": 1,
+   "locator": {
+    "paragraph": 0
+   }
+  },
+  {
+   "file": "tampered_hidden_text.docx",
+   "category": "hidden_text",
+   "kind": "white_font",
+   "key": "secret keyword",
+   "count": 1,
+   "locator": {
+    "paragraph": 1
+   }
+  },
+  {
+   "file": "tampered_hidden_text.docx",
+   "category": "hidden_text",
+   "kind": "microscopic_font",
+   "key": "microscopic note one",
+   "count": 1,
+   "locator": {
+    "paragraph": 2
+   }
+  },
+  {
+   "file": "tampered_hidden_text.docx",
+   "category": "hidden_text",
+   "kind": "microscopic_font",
+   "key": "microscopic note two",
+   "count": 1,
+   "locator": {
+    "paragraph": 3
+   }
+  },
+  {
+   "file": "tampered_hidden_text.docx",
+   "category": "hidden_text",
+   "kind": "vanish_attribute",
+   "key": "vanished clause",
+   "count": 1,
+   "locator": {
+    "paragraph": 4
+   }
+  },
+  {
+   "file": "tampered_hidden_text.docx",
+   "category": "hidden_text",
+   "kind": "white_font",
+   "key": "another concealed line",
+   "count": 1,
+   "locator": {
+    "paragraph": 5
+   }
+  },
+  {
+   "file": "tampered_hidden_text.docx",
+   "category": "hidden_text",
+   "kind": "microscopic_font",
+   "key": "tiny tail",
+   "count": 1,
+   "locator": {
+    "paragraph": 5
+   }
+  },
+  {
+   "file": "tampered_hidden_text.docx",
+   "category": "hidden_text",
+   "kind": "vanish_attribute",
+   "key": "vanish tail",
+   "count": 1,
+   "locator": {
+    "paragraph": 5
+   }
+  },
+  {
+   "file": "tampered_hidden_text.docx",
+   "category": "hidden_text",
+   "kind": "white_font",
+   "key": "final hidden remark",
+   "count": 1,
+   "locator": {
+    "paragraph": 6
+   }
+  },
+  {
+   "file": "tampered_hidden_text.docx",
+   "category": "hidden_text",
+   "kind": "vanish_attribute",
+   "key": "second vanished bit",
+   "count": 1,
+   "locator": {
+    "paragraph": 6
+   }
+  },
+  {
+   "file": "tampered_homoglyphs.pdf",
+   "category": "replaced_character",
+   "kind": "mixed_script_word",
+   "key": "\u0440\u0430ypal",
+   "count": 1,
+   "locator": {
+    "page": 1
+   }
+  },
+  {
+   "file": "tampered_homoglyphs.pdf",
+   "category": "replaced_character",
+   "kind": "mixed_script_word",
+   "key": "g\u043e\u043egle",
+   "count": 1,
+   "locator": {
+    "page": 1
+   }
+  },
+  {
+   "file": "tampered_homoglyphs.pdf",
+   "category": "replaced_character",
+   "kind": "mixed_script_word",
+   "key": "\u0430pple",
+   "count": 1,
+   "locator": {
+    "page": 1
+   }
+  },
+  {
+   "file": "tampered_homoglyphs.pdf",
+   "category": "replaced_character",
+   "kind": "mixed_script_word",
+   "key": "micr\u043esoft",
+   "count": 1,
+   "locator": {
+    "page": 1
+   }
+  },
+  {
+   "file": "tampered_homoglyphs.pdf",
+   "category": "replaced_character",
+   "kind": "mixed_script_word",
+   "key": "payp\u0430l",
+   "count": 1,
+   "locator": {
+    "page": 1
+   }
+  },
+  {
+   "file": "tampered_homoglyphs.pdf",
+   "category": "replaced_character",
+   "kind": "mixed_script_word",
+   "key": "amaz\u043en",
+   "count": 1,
+   "locator": {
+    "page": 1
+   }
+  },
+  {
+   "file": "tampered_homoglyphs.pdf",
+   "category": "replaced_character",
+   "kind": "mixed_script_word",
+   "key": "faceb\u043e\u043ek",
+   "count": 1,
+   "locator": {
+    "page": 1
+   }
+  },
+  {
+   "file": "tampered_homoglyphs.pdf",
+   "category": "replaced_character",
+   "kind": "mixed_script_word",
+   "key": "twitt\u0435r",
+   "count": 1,
+   "locator": {
+    "page": 1
+   }
+  },
+  {
+   "file": "tampered_homoglyphs.pdf",
+   "category": "replaced_character",
+   "kind": "mixed_script_word",
+   "key": "netfl\u0456x",
+   "count": 1,
+   "locator": {
+    "page": 1
+   }
+  },
+  {
+   "file": "tampered_homoglyphs.pdf",
+   "category": "replaced_character",
+   "kind": "mixed_script_word",
+   "key": "spot\u0456fy",
+   "count": 1,
+   "locator": {
+    "page": 1
+   }
+  },
+  {
+   "file": "tampered_homoglyphs.pdf",
+   "category": "replaced_character",
+   "kind": "mixed_script_word",
+   "key": "link\u0435dIn",
+   "count": 1,
+   "locator": {
+    "page": 1
+   }
+  },
+  {
+   "file": "tampered_homoglyphs.pdf",
+   "category": "replaced_character",
+   "kind": "mixed_script_word",
+   "key": "inst\u0430gram",
+   "count": 1,
+   "locator": {
+    "page": 1
+   }
+  },
+  {
+   "file": "tampered_zero_width.pdf",
+   "category": "hidden_unicode",
+   "kind": "invisible_character",
+   "key": "U+200D",
+   "count": 1,
+   "locator": {
+    "page": 1
+   }
+  },
+  {
+   "file": "tampered_zero_width.pdf",
+   "category": "hidden_unicode",
+   "kind": "invisible_character",
+   "key": "U+200C",
+   "count": 2,
+   "locator": {
+    "page": 1
+   }
+  },
+  {
+   "file": "tampered_zero_width.pdf",
+   "category": "hidden_unicode",
+   "kind": "invisible_character",
+   "key": "U+200B",
+   "count": 5,
+   "locator": {
+    "page": 1
+   }
+  },
+  {
+   "file": "tampered_zero_width.pdf",
+   "category": "hidden_unicode",
+   "kind": "invisible_character",
+   "key": "U+200D",
+   "count": 1,
+   "locator": {
+    "page": 1
+   }
+  },
+  {
+   "file": "tampered_zero_width.pdf",
+   "category": "hidden_unicode",
+   "kind": "invisible_character",
+   "key": "U+202E",
+   "count": 1,
+   "locator": {
+    "page": 1
+   }
+  },
+  {
+   "file": "tampered_zero_width.pdf",
+   "category": "hidden_unicode",
+   "kind": "invisible_character",
+   "key": "U+00AD",
+   "count": 3,
+   "locator": {
+    "page": 1
+   }
+  },
+  {
+   "file": "tampered_white_text.pdf",
+   "category": "hidden_text",
+   "kind": "white_text",
+   "key": null,
+   "count": 21,
+   "locator": {
+    "page": 1
+   }
+  },
+  {
+   "file": "tampered_white_text.pdf",
+   "category": "hidden_text",
+   "kind": "white_text",
+   "key": null,
+   "count": 21,
+   "locator": {
+    "page": 1
+   }
+  },
+  {
+   "file": "tampered_white_text.pdf",
+   "category": "hidden_text",
+   "kind": "white_text",
+   "key": null,
+   "count": 17,
+   "locator": {
+    "page": 1
+   }
+  },
+  {
+   "file": "tampered_white_text.pdf",
+   "category": "hidden_text",
+   "kind": "white_text",
+   "key": null,
+   "count": 19,
+   "locator": {
+    "page": 1
+   }
+  },
+  {
+   "file": "tampered_white_text.pdf",
+   "category": "hidden_text",
+   "kind": "white_text",
+   "key": null,
+   "count": 18,
+   "locator": {
+    "page": 1
+   }
+  },
+  {
+   "file": "tampered_tiny_text.pdf",
+   "category": "hidden_text",
+   "kind": "microscopic_font",
+   "key": null,
+   "count": 21,
+   "locator": {
+    "page": 1
+   }
+  },
+  {
+   "file": "tampered_tiny_text.pdf",
+   "category": "hidden_text",
+   "kind": "microscopic_font",
+   "key": null,
+   "count": 16,
+   "locator": {
+    "page": 1
+   }
+  },
+  {
+   "file": "tampered_tiny_text.pdf",
+   "category": "hidden_text",
+   "kind": "microscopic_font",
+   "key": null,
+   "count": 18,
+   "locator": {
+    "page": 1
+   }
+  },
+  {
+   "file": "tampered_out_of_bounds.pdf",
+   "category": "hidden_text",
+   "kind": "out_of_bounds",
+   "key": null,
+   "count": 39,
+   "locator": {
+    "page": 1
+   }
+  }
+ ],
+ "benign": [
+  "benign_dark_banner.docx",
+  "benign_shaded_table.docx",
+  "benign_cover.docx",
+  "benign_cyrillic.docx",
+  "benign_clean.docx",
+  "benign_dark_banner.pdf",
+  "benign_cyrillic.pdf",
+  "benign_clean.pdf"
+ ]
+}

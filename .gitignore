@@ -1,0 +1,39 @@
+# Cloned upstream repos used only for REA reference & differential testing
+research/
+
+# Python virtual environment & caches
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+*.pytest_cache/
+
+# Node & Frontend
+node_modules/
+web/node_modules/
+web/.next/
+web/out/
+web/build/
+.next/
+
+# Databases & local uploads
+*.db
+*.sqlite
+*.sqlite3
+uploads/
+*.log
+
+# Model weights & caches
+*.safetensors
+*.bin
+*.pt
+*.pth
+.cache/
+cache/
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+desktop.ini

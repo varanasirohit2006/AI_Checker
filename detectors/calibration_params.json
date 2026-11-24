@@ -1,0 +1,14 @@
+{
+  "model_pair_binoculars": {
+    "observer": "gpt2",
+    "performer": "distilgpt2"
+  },
+  "model_fastdetect": "gpt2",
+  "intercept": 0.37137609828649215,
+  "weight_binoculars": -0.07643909689608684,
+  "weight_fastdetect": 0.3603978169791227,
+  "operating_threshold": 0.6689262499644423,
+  "human_fpr": 0.0,
+  "ai_recall": 0.0,
+  "calibrated_date": "2026-11-23"
+}
