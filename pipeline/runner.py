@@ -86,7 +86,7 @@ class PipelineRunner:
                     severity="high" if fl.category == "hidden_text" else "medium",
                     location=fl.location,
                     instances=fl.instances,
-                    summary=fl.summary,
+                    summary=fl.summary() if callable(getattr(fl, "summary", None)) else str(getattr(fl, "summary", "")),
                 )
             )
 

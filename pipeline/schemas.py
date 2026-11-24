@@ -93,4 +93,7 @@ class UnifiedOriginalityReport:
         return asdict(self)
 
     def to_json(self, indent: int = 2) -> str:
-        return json.dumps(self.to_dict(), indent=indent)
+        def _default(o):
+            return o() if callable(o) else str(o)
+
+        return json.dumps(self.to_dict(), indent=indent, default=_default)
